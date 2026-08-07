@@ -71,7 +71,6 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
-
     @PostMapping
     @ApiOperation("新增员工")
     public Result<String> save(@RequestBody EmployeeDTO employeeDTO) {
@@ -79,7 +78,6 @@ public class EmployeeController {
         employeeService.save(employeeDTO);
         return Result.success();
     }
-
     @GetMapping("/page")
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
         log.info("select the employee from the page: {}", employeePageQueryDTO);
@@ -90,6 +88,17 @@ public class EmployeeController {
     public Result startOrStop(@PathVariable Integer status, Long id) {
         log.info("start or stop the employee from the status: {}", status);
         employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+    @GetMapping("/{id}")
+    public Result<Employee> getEmployee(@PathVariable Long id) {
+        Employee employee = employeeService.selectById(id);
+        return Result.success(employee);
+    }
+    @PutMapping
+    public Result updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("update the employee from the employee: {}", employeeDTO);
+        employeeService.update(employeeDTO);
         return Result.success();
     }
 
