@@ -1,16 +1,19 @@
 package com.sky.controller.admin;
 
 
+import com.github.pagehelper.Page;
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -24,6 +27,33 @@ public class DishController {
     public Result save(@RequestBody DishDTO dishDTO) {
         log.info("save dish:{}", dishDTO);
         dishService.saveWithFlavour(dishDTO);
+        return Result.success();
+    }
+
+    @GetMapping("/page")
+    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) {
+        log.info("select the dish pages: {}", dishPageQueryDTO);
+        PageResult pageResult = dishService.pathQuery(dishPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+    @DeleteMapping
+    public Result delete(@RequestParam List<Long> ids) {
+        log.info("delete dish:{}", ids);
+        dishService.deleteBatch(ids);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    public Result<DishVO> getById(@PathVariable Long id) {
+        log.info("get by id:{}", id);
+        return Result.success(dishService.getById(id));
+    }
+
+    @PutMapping
+    public Result update(@RequestBody DishDTO dishDTO) {
+        log.info("update dish:{}", dishDTO);
+        dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
 }
