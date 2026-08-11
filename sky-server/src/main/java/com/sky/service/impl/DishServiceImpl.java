@@ -89,4 +89,11 @@ public class DishServiceImpl implements DishService {
             dishFlavourMapper.insertFlavors(dishFlavors, dish.getId());
         }
     }
+
+    @Override
+    public List<Dish> getByCategoryId(Long categoryId) {
+        return dishMapper.getByCategoryId(categoryId);
+    }
+
+
 }

@@ -56,4 +56,10 @@ public class DishController {
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
+
+    @GetMapping("/list")
+    public Result<List<Dish>> getByCategoryId(@RequestParam Long categoryId) {
+        log.info("get by categoryId:{}", categoryId);
+        return Result.success(dishService.getByCategoryId(categoryId));
+    }
 }
