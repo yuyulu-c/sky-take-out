@@ -11,3 +11,8 @@ sky:
     access-key-id: LTAI5t5xoYu9rkNt54ec8W65
     access-key-secret: YnF7uTnKeIM2wK8b40DnWZ9DUV0xhV
     bucket-name: sky-ityuyulu
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
