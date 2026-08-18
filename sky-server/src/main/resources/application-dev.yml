@@ -11,6 +11,9 @@ sky:
     access-key-id: LTAI5t5xoYu9rkNt54ec8W65
     access-key-secret: YnF7uTnKeIM2wK8b40DnWZ9DUV0xhV
     bucket-name: sky-ityuyulu
+  wechat:
+    appid: wxa8fbc4e6b90490eb
+    secret: 0c8986953f65f7f905ed261445f5d566
 spring:
   redis:
     host: localhost
