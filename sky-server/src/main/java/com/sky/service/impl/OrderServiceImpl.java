@@ -223,4 +223,39 @@ public class OrderServiceImpl implements OrderService {
 
         return orderVO;
     }
+
+    @Override
+    public void cancelById(Long id) {
+        Orders ordersDB = orderMapper.getById(id);
+        if (ordersDB == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        if (ordersDB.getStatus() > 2) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        Orders orders = new Orders();
+        orders.setId(id);
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelTime(LocalDateTime.now());
+        orderMapper.update(orders);
+    }
+
+    @Override
+    public void repetitionById(Long id) {
+        //查询历史订单明细
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(id);
+        //构造购物车
+        List<ShoppingCart> carts = new ArrayList<>();
+        for (OrderDetail orderDetail : orderDetailList) {
+            ShoppingCart cart = new ShoppingCart();
+            BeanUtils.copyProperties(orderDetail, cart);
+            cart.setCreateTime(LocalDateTime.now());
+            carts.add(cart);
+        }
+        //删除购物车
+        shoppingCartMapper.deleteByUserId(id);
+        //加入购物车
+        shoppingCartMapper.insertBatch(carts);
+        
+    }
 }
